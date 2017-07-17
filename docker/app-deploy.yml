@@ -1,0 +1,15 @@
+---
+
+- name: Deploying app
+  hosts: ec2
+  connection: ssh
+
+  tasks:
+  - name: Copying docker-compose file
+    copy: src=app1/docker-compose.app.yml dest=~/home/ubuntu/
+
+  - name: Running docker-compose.yml
+    command: sudo docker-compose -f ~/home/ubuntu/docker-compose.app.yml up -d
+      
+  - name: Removing docker compose file
+    command: sudo rm -f ~/home/ubuntu/docker-compose.app.yml
