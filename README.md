@@ -56,13 +56,21 @@ remote_tmp     = $HOME/.ansible/tmp
 local_tmp      = $HOME/.ansible/tmp
 
 forks          = 5
+
 poll_interval  = 15
+
 sudo_user      = root
+
 #ask_sudo_pass = True
+
 #ask_pass      = True
+
 #transport      = smart
+
 remote_port    = 22
+
 #module_lang    = C
+
 #module_set_locale = True
 
 Creating EC2
