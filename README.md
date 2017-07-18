@@ -50,8 +50,11 @@ Moreso, I equally created another file at /etc/ansible/ansible.cfg.This is the m
 inventory      = /etc/ansible/hosts
 
 library        = /usr/share/my_modules/
+
 remote_tmp     = $HOME/.ansible/tmp
+
 local_tmp      = $HOME/.ansible/tmp
+
 forks          = 5
 poll_interval  = 15
 sudo_user      = root
