@@ -115,3 +115,70 @@ The output can be observed using the ip address of the ec2 instance.The Public D
 Service | Port | Wordpress : 8080 Kibana : 5601
 
 Please check the inbound and outbound rules in case of any page loading and reloading errors.You can check it out at EC2 Dashboard > Security Groups.
+
+DASHBOARD CREATION:USING DATADOG 
+To collect Docker metrics about all your containers, one needs to run one Datadog Agent on every host. There are two ways to run the Agent: directly on each host, or within a docker-dd-agent container. I shall be using using the latter
+
+The hosts need to have cgroup memory management enabled for the Docker check to succeed.
+
+Container Installation
+Ensure Docker is running on the host.
+docker run -d --name dd-agent \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -v /proc/:/host/proc/:ro \
+  -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+  -e API_KEY={YOUR API KEY} \
+  datadog/docker-dd-agent:latest
+  
+  Environment variables
+
+Note that in the command above, you are able to pass your API key to the Datadog Agent using Docker’s -e environment variable flag. Some other variables you can pass include:API-KEY which sets the Datadog API key, DD_HOSTNAME sets the hostname in the Agent container's datadog.conf file, etc.
+  
+  METRICS
+  docker.cpu.system: displays the fraction of time the CPU is executing system calls on behalf of processes of the container
+docker.containers.running: shows the number of containers running on the host
+docker.containers.stopped: The number of containers running on this host  and many more.
+  
+  CONFIGURATION FILES
+
+One can also mount YAML configuration files in the /conf.d folder, they will automatically be copied to /etc/dd-agent/conf.d/ when the container starts. The same can be done for the /checks.d folder. Any Python files in the /checks.d folder will automatically be copied to /etc/dd-agent/checks.d/ when the container starts.
+
+Create a configuration folder on the host and write the YAML files in it. The examples below uses the /checks.d folder
+
+mkdir /opt/dd-agent-conf.d
+touch /opt/dd-agent-conf.d/nginx.yaml
+When creating the container, mount this new folder to /conf.d.
+
+docker run -d --name dd-agent \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -v /proc/:/host/proc/:ro \
+  -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+  -v /opt/dd-agent-conf.d:/conf.d:ro \
+  -e API_KEY={your_api_key_here} \
+  datadog/docker-dd-agent
+The important part here is -v /opt/dd-agent-conf.d:/conf.d:ro
+
+Now when the container starts, all files in /opt/dd-agent-conf.d with a .yaml extension will be copied to /etc/dd-agent/conf.d/. Please note that to add new files you will need to restart the container.
+
+  BUILDING AN IMAGE:
+To configure specific settings of the agent directly in the image, I need to build a Docker image on top of it.
+
+Creating a Dockerfile to set the specific configuration or to install dependencies.
+
+FROM datadog/docker-dd-agent
+# Example: MySQL
+ADD conf.d/mysql.yaml /etc/dd-agent/conf.d/mysql.yaml
+Build it.
+
+docker build -t dd-agent-image .
+
+Then run it like the datadog/docker-dd-agent image.
+
+docker run -d --name dd-agent \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -v /proc/:/host/proc/:ro \
+  -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+  -e API_KEY={your_api_key_here} \
+  dd-agent-image
+
+  
