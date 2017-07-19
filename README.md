@@ -39,9 +39,12 @@ Create and add the following lines at /etc/ansible/hosts file :
 
 [ec2]
 <EC2-IP> ansible_user=ubuntu
+
 I chose the EC2 IP by choosing an elastic Ip for my instance.This is a great alternative to fixing IP as it may change after a reboot of EC2 instance. This setting can be observed at EC2 Dashboard > Elastic IP.
 
-Moreso, I equally created another file at /etc/ansible/ansible.cfg.This is the main configuration file for ansible to run.
+Moreso, I equally created another file at /etc/ansible/ansible.cfg.
+
+This is the main configuration file for ansible to run.
 
 [defaults]
 
@@ -75,7 +78,7 @@ remote_port    = 22
 
 Creating EC2
 
-This can be done using the provision.yml file present in the ansible dir.It requires one to put your AWS credentials there.The specifics.yml file stated the region,AMI and instance type.The command to run the ansible playbook is as follows:
+This can be done using the provision.yml file present in the ansible dir.It requires one to put ones AWS credentials there.The specifics.yml file stated the region,AMI and instance type.The command to run the ansible playbook is as follows:
 
 $ sudo ansible-playbook provision.yml -i hosts -vv
 
@@ -104,22 +107,27 @@ Deploying ELK Stack using Docker Compose
 It can be done using the ansible playbook.
 
 $ sudo ansible-playbook elk-deploy.yml -vv --private-key <keypair>
+
 The playbook consists of the below commands:
 
 $ cp elk1/docker-compose.yml ~/home/ubuntu/
+
 $ sudo docker-compose -f ~/home/ubuntu/docker-compose.yml up -d
+
 $ sudo rm -f ~/home/ubuntu/docker-compose.yml 
 
-Deploying Wordpress and mysql Containers using Docker Compose
+Deploying Wordpress and Mysql Containers using Docker Compose
 
 It was done using the ansible playbook.
 
 $ sudo ansible-playbook app-deploy.yml -vv --private-key <keypair>
+
 The playbook consists of the following below commands:
 
 $ cp app1/docker-compose.yml ~/home/ubuntu/
 $ sudo docker-compose -f ~/home/ubuntu/docker-compose.app.yml up -d
 $ sudo rm -f ~/home/ubuntu/docker-compose.app.yml 
+
 Output
 
 The output can be observed using the ip address of the ec2 instance.The Public DNS would be like ec2-xxx-xxx-xxx.compute.amazonaws.com.
