@@ -32,7 +32,7 @@ Prerequisites
 This project creates a Docker composed based ELK setup, uses ansible for provisioning the minimal AWS infrastructure to run the ELK based logging infrastructure, then deploy dockerized WordPress based blogging application. 
 Monitor the AWS resources and the blogging application using the ELK based centralized logging and monitoring infrastructure.
 
-Playbooks
+Playbooks arena.
 
 $ sudo apt-get install python-minimal -y
 
