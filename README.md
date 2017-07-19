@@ -2,7 +2,7 @@
 
 Cake's Project: Deploys Docker and others 
 
-Prerequisites
+Dependencies
  - OS: Ubuntu Server 14.04 64-bit
 
 - App Server: Gunicorn/Nginx
@@ -21,8 +21,18 @@ Prerequisites
 
 - Kibana						
 
+Prerequisites
+•	Setup and AWS account
+•	Create an AWS user or role with sufficient permissions to create EC2 instance
+•	Use the access and secret keys on the Ansible server
+•	Build containers
+•	Use Datadog for dashboard output
+
+
 This project creates a Docker composed based ELK setup, uses ansible for provisioning the minimal AWS infrastructure to run the ELK based logging infrastructure, then deploy dockerized WordPress based blogging application. 
 Monitor the AWS resources and the blogging application using the ELK based centralized logging and monitoring infrastructure.
+
+Playbooks
 
 $ sudo apt-get install python-minimal -y
 
