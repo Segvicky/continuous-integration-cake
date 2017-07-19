@@ -1,6 +1,6 @@
 # CakeSegvicky
 
-Cake's Project
+Cake's Project: Deploys Docker and others 
 
 Prerequisites
  - OS: Ubuntu Server 14.04 64-bit
