@@ -1,4 +1,4 @@
-# CakeSegvicky
+# Continuous integration 
 
 Cake's Project: Deploys Docker and others 
 
